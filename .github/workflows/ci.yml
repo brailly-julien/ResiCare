@@ -18,9 +18,9 @@ jobs:
     name: Back-end (.NET)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
           # Pas de cache NuGet : nécessiterait des packages.lock.json (RestorePackagesWithLockFile),
@@ -43,9 +43,9 @@ jobs:
       run:
         working-directory: resicare-web
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "lts/*"
           cache: "npm"
