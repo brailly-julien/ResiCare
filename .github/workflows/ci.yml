@@ -1,0 +1,61 @@
+name: CI
+
+# Se déclenche sur les push et les pull requests visant main.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ----- Back-end : build + tests (.NET) -----
+  # Aucun service SQL Server nécessaire : les tests (handlers ET intégration via
+  # WebApplicationFactory) tournent sur SQLite in-memory. Les deux seuls réglages
+  # normalement fournis par `dotnet user-secrets` en dev (chaîne de connexion,
+  # clé JWT) sont substitués par des valeurs de test directement dans
+  # ResiCareWebFactory — aucun secret CI à configurer.
+  backend:
+    name: Back-end (.NET)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+          # Pas de cache NuGet : nécessiterait des packages.lock.json (RestorePackagesWithLockFile),
+          # non utilisés dans ce projet. Restauration à chaque run — largement acceptable ici.
+
+      - name: Restore
+        run: dotnet restore ResiCare.slnx
+
+      - name: Build
+        run: dotnet build ResiCare.slnx --no-restore
+
+      - name: Test
+        run: dotnet test ResiCare.slnx --no-build --nologo
+
+  # ----- Front-end : build + tests (Angular) -----
+  frontend:
+    name: Front-end (Angular)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: resicare-web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: resicare-web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test -- --watch=false

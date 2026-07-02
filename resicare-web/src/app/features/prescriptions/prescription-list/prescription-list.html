@@ -1,0 +1,95 @@
+<div class="rc-presc-header">
+  <h1>Traitement</h1>
+  <a mat-button [routerLink]="['/residents', residentId]"><mat-icon>arrow_back</mat-icon> Fiche</a>
+</div>
+
+@if (error()) {
+  <p class="rc-error">{{ error() }}</p>
+}
+
+@if (isManager()) {
+  <mat-card class="rc-block">
+    <mat-card-header><mat-card-title>Nouvelle prescription</mat-card-title></mat-card-header>
+    <mat-card-content>
+      <form class="rc-presc-form" [formGroup]="form" (ngSubmit)="prescribe()">
+        <mat-form-field appearance="outline">
+          <mat-label>Médicament</mat-label>
+          <input matInput formControlName="medicationName" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Dose</mat-label>
+          <input matInput formControlName="dosage" placeholder="Ex. 1000 mg" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Posologie</mat-label>
+          <input matInput formControlName="posology" placeholder="Ex. 3x/jour" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Voie</mat-label>
+          <mat-select formControlName="route">
+            @for (r of routes; track r) {
+              <mat-option [value]="r">{{ routeLabels[r] }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Début</mat-label>
+          <input matInput type="date" formControlName="startDate" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Instructions (optionnel)</mat-label>
+          <input matInput formControlName="instructions" />
+        </mat-form-field>
+        <button mat-flat-button type="submit" [disabled]="form.invalid">Prescrire</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+}
+
+<mat-card class="rc-block">
+  <mat-card-header><mat-card-title>Prescriptions</mat-card-title></mat-card-header>
+  <mat-card-content>
+    @for (p of prescriptions(); track p.id) {
+      <div class="rc-presc-row" [class.rc-presc-row--stopped]="p.isDiscontinued">
+        <div class="rc-presc-row__main">
+          <strong>{{ p.medicationName }}</strong> — {{ p.dosage }} · {{ p.posology }}
+          <span class="rc-chip">{{ routeLabels[p.route] }}</span>
+          @if (p.isDiscontinued) {
+            <span class="rc-chip rc-chip--stopped">Arrêtée</span>
+          }
+          @if (p.instructions) {
+            <div class="rc-muted">{{ p.instructions }}</div>
+          }
+        </div>
+        @if (!p.isDiscontinued) {
+          <div class="rc-presc-row__actions">
+            <button mat-stroked-button (click)="administer(p.id, 'Given')">Donné</button>
+            <button mat-stroked-button (click)="administer(p.id, 'Refused')">Refusé</button>
+            @if (isManager()) {
+              <button mat-icon-button (click)="discontinue(p.id)" title="Arrêter" aria-label="Arrêter">
+                <mat-icon>block</mat-icon>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    } @empty {
+      <p class="rc-muted">Aucune prescription.</p>
+    }
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="rc-block">
+  <mat-card-header><mat-card-title>Administrations du jour</mat-card-title></mat-card-header>
+  <mat-card-content>
+    @for (a of administrations(); track a.id) {
+      <div class="rc-presc-row">
+        <span class="rc-chip">{{ statusLabels[a.status] }}</span>
+        <span>{{ a.medicationName }}</span>
+        <span class="rc-muted">{{ a.administeredAt | date: 'HH:mm' }}</span>
+      </div>
+    } @empty {
+      <p class="rc-muted">Aucune administration aujourd'hui.</p>
+    }
+  </mat-card-content>
+</mat-card>

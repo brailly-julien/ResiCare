@@ -1,0 +1,67 @@
+<div class="rc-planning-header">
+  <h1>Planning</h1>
+  <a mat-button routerLink="/residents"><mat-icon>arrow_back</mat-icon> Résidents</a>
+</div>
+
+<mat-form-field appearance="outline" class="rc-planning-date">
+  <mat-label>Date</mat-label>
+  <input matInput type="date" [value]="date()" (change)="onDateChange($any($event.target).value)" />
+</mat-form-field>
+
+@if (error()) {
+  <p class="rc-error">{{ error() }}</p>
+}
+
+<mat-card class="rc-block">
+  <mat-card-header><mat-card-title>Nouvelle affectation</mat-card-title></mat-card-header>
+  <mat-card-content>
+    <form class="rc-assign-form" [formGroup]="form" (ngSubmit)="assign()">
+      <mat-form-field appearance="outline">
+        <mat-label>Résident</mat-label>
+        <mat-select formControlName="residentId">
+          @for (r of residents(); track r.id) {
+            <mat-option [value]="r.id">{{ r.lastName }} {{ r.firstName }} — ch. {{ r.roomNumber }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Soignant</mat-label>
+        <mat-select formControlName="caregiverId">
+          @for (c of caregivers(); track c.id) {
+            <mat-option [value]="c.id">{{ c.lastName }} {{ c.firstName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Poste</mat-label>
+        <mat-select formControlName="shift">
+          @for (s of shifts; track s) {
+            <mat-option [value]="s">{{ shiftLabels[s] }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-flat-button type="submit" [disabled]="form.invalid">Affecter</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="rc-block">
+  <mat-card-header><mat-card-title>Affectations du jour</mat-card-title></mat-card-header>
+  <mat-card-content>
+    @for (a of assignments(); track a.id) {
+      <div class="rc-assign-row">
+        <span class="rc-chip">{{ shiftLabels[a.shift] }}</span>
+        <span>Ch. {{ a.roomNumber }} — {{ a.residentLastName }} {{ a.residentFirstName }}</span>
+        <span class="rc-muted">→ {{ a.caregiverLastName }} {{ a.caregiverFirstName }}</span>
+        <button mat-icon-button (click)="remove(a.id)" aria-label="Retirer l'affectation" title="Retirer">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    } @empty {
+      <p class="rc-muted">Aucune affectation pour cette date.</p>
+    }
+  </mat-card-content>
+</mat-card>

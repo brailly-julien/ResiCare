@@ -1,0 +1,68 @@
+// Thème Angular Material (Material 3) via mat.theme() : définit les variables CSS
+// --mat-sys-* (couleurs, typographie) utilisées par les composants ET nos styles.
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  // Thème clair par défaut (passer à `dark` ou `light dark` au besoin).
+  color-scheme: light;
+
+  // Couleurs/typo pilotées par Material (source unique de vérité).
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  margin: 0;
+  min-height: 100%;
+}
+
+/* ============================================================
+   Fondations MOBILE-FIRST
+   Material gère couleurs/typo ci-dessus. Ici : reset, tokens
+   d'espacement/layout, et l'utilitaire conteneur. Base = mobile,
+   on enrichit via des media queries `min-width`.
+   ============================================================ */
+
+:root {
+  --rc-space-xs: 0.25rem;
+  --rc-space-sm: 0.5rem;
+  --rc-space-md: 1rem;
+  --rc-space-lg: 1.5rem;
+  --rc-space-xl: 2rem;
+
+  --rc-radius: 12px;
+  --rc-max-width: 960px; /* largeur de contenu max sur grand écran */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Conteneur : pleine largeur sur mobile, borné et centré sur grand écran. */
+.rc-container {
+  width: 100%;
+  max-width: var(--rc-max-width);
+  margin-inline: auto;
+  padding: var(--rc-space-md);
+}
+
+@media (min-width: 768px) {
+  .rc-container {
+    padding: var(--rc-space-lg);
+  }
+}

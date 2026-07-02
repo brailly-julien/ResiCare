@@ -1,0 +1,65 @@
+<div class="rc-list-header">
+  <h1 class="rc-list__title">Résidents</h1>
+  @if (isManager()) {
+    <a mat-flat-button routerLink="/residents/new">
+      <mat-icon>add</mat-icon>
+      Nouveau
+    </a>
+  }
+</div>
+
+<app-stats-bar />
+
+@if (myAssignments().length > 0) {
+  <mat-card class="rc-myres">
+    <mat-card-header><mat-card-title>Mes résidents aujourd'hui</mat-card-title></mat-card-header>
+    <mat-card-content>
+      @for (a of myAssignments(); track a.id) {
+        <a class="rc-myres__row" [routerLink]="['/residents', a.residentId]">
+          <span class="rc-chip">{{ shiftLabels[a.shift] }}</span>
+          <span>Ch. {{ a.roomNumber }} — {{ a.residentLastName }} {{ a.residentFirstName }}</span>
+        </a>
+      }
+    </mat-card-content>
+  </mat-card>
+}
+
+<mat-form-field appearance="outline" class="rc-list__search">
+  <mat-label>Rechercher par nom</mat-label>
+  <input matInput [formControl]="searchControl" placeholder="Ex. Bernard" />
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (error()) {
+  <p class="rc-list__error">{{ error() }}</p>
+}
+
+@if (!loading() && !error() && residents().length === 0) {
+  <p class="rc-list__empty">Aucun résident trouvé.</p>
+}
+
+<div class="rc-grid">
+  @for (resident of residents(); track resident.id) {
+    <a class="rc-card-link" [routerLink]="['/residents', resident.id]">
+      <mat-card class="rc-card" [class.rc-card--archived]="resident.isArchived">
+        <mat-card-header>
+          <mat-card-title>{{ resident.lastName }} {{ resident.firstName }}</mat-card-title>
+          <mat-card-subtitle>Chambre {{ resident.roomNumber }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <span class="rc-chip">{{ levelLabel(resident.overallDependency) }}</span>
+          @if (resident.fallRisk === 'Moderate' || resident.fallRisk === 'High') {
+            <span class="rc-chip rc-chip--risk">Chute</span>
+          }
+          @if (resident.isArchived) {
+            <span class="rc-chip rc-chip--archived">Archivé</span>
+          }
+        </mat-card-content>
+      </mat-card>
+    </a>
+  }
+</div>

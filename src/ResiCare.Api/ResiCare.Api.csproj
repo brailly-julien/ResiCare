@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- Couche API : point d'entrée HTTP et "composition root" (montage de
+       l'injection de dépendances). Connaît Application ET Infrastructure. -->
+  <PropertyGroup>
+    <!-- Secrets dev (chaîne de connexion, Jwt:Key) stockés hors du repo via
+         `dotnet user-secrets` (%APPDATA%\Microsoft\UserSecrets\<Id>), jamais commités. -->
+    <UserSecretsId>9a48445c-3e79-42b6-b9f4-0ed84e84af06</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="QuestPDF" Version="2026.6.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.16.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ResiCare.Application\ResiCare.Application.csproj" />
+    <ProjectReference Include="..\ResiCare.Infrastructure\ResiCare.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

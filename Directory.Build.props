@@ -1,0 +1,21 @@
+<Project>
+
+  <!--
+    Directory.Build.props : réglages MSBuild partagés par TOUS les projets.
+    MSBuild remonte l'arborescence des dossiers et importe automatiquement
+    ce fichier AVANT chaque .csproj. On centralise donc ici tout ce qui doit
+    être identique partout : version du framework, analyse nullable, etc.
+    -> Un seul endroit à modifier le jour où on passe à .NET 11, par exemple.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+
+    <!-- Nullable reference types : le compilateur traque les null oubliés. -->
+    <Nullable>enable</Nullable>
+
+    <!-- Plus besoin d'écrire les "using System;" etc. les plus courants. -->
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

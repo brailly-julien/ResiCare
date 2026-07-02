@@ -1,0 +1,132 @@
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (error()) {
+  <p class="rc-error">{{ error() }}</p>
+}
+
+@if (dashboard(); as d) {
+  <!-- Fiche -->
+  <mat-card class="rc-block">
+    <mat-card-header>
+      <mat-card-title>{{ d.lastName }} {{ d.firstName }}</mat-card-title>
+      <mat-card-subtitle>Chambre {{ d.roomNumber }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Naissance : {{ d.birthDate | date: 'dd/MM/yyyy' }} · Admission : {{ d.admissionDate | date: 'dd/MM/yyyy' }}</p>
+      <p>Référent : {{ caregiverName(d.referentCaregiverId) }}</p>
+      <div class="rc-badges">
+        @for (risk of risks; track risk.key) {
+          @if (d[risk.key] !== 'None') {
+            <span class="rc-badge rc-badge--risk">{{ risk.label }} : {{ riskLevelLabels[d[risk.key]] }}</span>
+          }
+        }
+        @if (d.isArchived) { <span class="rc-badge rc-badge--archived">Archivé</span> }
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      @if (isManager()) {
+        <a mat-button [routerLink]="['/residents', d.id, 'edit']"><mat-icon>edit</mat-icon> Modifier</a>
+      }
+      <button mat-button (click)="openPdf(d.id)"><mat-icon>picture_as_pdf</mat-icon> PDF</button>
+      <a mat-button [routerLink]="['/residents', d.id, 'prescriptions']"><mat-icon>medication</mat-icon> Traitement</a>
+      @if (isManager() && !d.isArchived) {
+        <button mat-button (click)="archive()"><mat-icon>archive</mat-icon> Archiver</button>
+      }
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Dépendance -->
+  <mat-card class="rc-block">
+    <mat-card-header><mat-card-title>Autonomie</mat-card-title></mat-card-header>
+    <mat-card-content>
+      @for (activity of activities; track activity) {
+        <div class="rc-dep-row">
+          <span>{{ activityLabels[activity] }}</span>
+          <span class="rc-chip">{{ autonomyLabels[d.dependency[activity]] }}</span>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Infos & bio (si renseignées) -->
+  @if (
+    d.attendingPhysician || d.emergencyContactName || d.emergencyContactPhone ||
+    d.occupation || d.interests || d.family
+  ) {
+    <mat-card class="rc-block">
+      <mat-card-header><mat-card-title>Informations</mat-card-title></mat-card-header>
+      <mat-card-content>
+        @if (d.attendingPhysician) { <p>Médecin traitant : {{ d.attendingPhysician }}</p> }
+        @if (d.emergencyContactName) { <p>Contact : {{ d.emergencyContactName }}</p> }
+        @if (d.emergencyContactPhone) { <p>Téléphone : {{ d.emergencyContactPhone }}</p> }
+        @if (d.occupation) { <p>Métier : {{ d.occupation }}</p> }
+        @if (d.interests) { <p>Intérêts : {{ d.interests }}</p> }
+        @if (d.family) { <p>Famille : {{ d.family }}</p> }
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <div class="rc-columns">
+    <!-- Tâches du jour -->
+    <mat-card class="rc-block">
+      <mat-card-header><mat-card-title>Tâches du jour</mat-card-title></mat-card-header>
+      <mat-card-content>
+        @for (task of d.todayTasks; track task.id) {
+          <div class="rc-task">
+            <span [class.rc-task--done]="task.status === 'Done'">{{ task.label }}</span>
+            @if (task.status === 'Done') {
+              <span class="rc-badge rc-badge--done">Fait</span>
+            } @else {
+              <button mat-stroked-button (click)="completeTask(task.id)">Marquer fait</button>
+            }
+          </div>
+        } @empty {
+          <p class="rc-muted">Aucune tâche aujourd'hui.</p>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Observations -->
+    <mat-card class="rc-block">
+      <mat-card-header><mat-card-title>Observations récentes</mat-card-title></mat-card-header>
+      <mat-card-content>
+        @for (obs of d.recentObservations; track obs.id) {
+          <div class="rc-obs">
+            <div class="rc-obs__meta">
+              <span class="rc-chip">{{ categoryLabels[obs.category] }}</span>
+              <span class="rc-muted">{{ obs.createdAt | date: 'dd/MM/yyyy HH:mm' }} · {{ caregiverName(obs.caregiverId) }}</span>
+            </div>
+            <p class="rc-obs__content">{{ obs.content }}</p>
+          </div>
+        } @empty {
+          <p class="rc-muted">Aucune observation.</p>
+        }
+
+        <a class="rc-seeall" [routerLink]="['/residents', d.id, 'observations']">Voir toutes les observations →</a>
+
+        @if (!d.isArchived) {
+          <form class="rc-obs-form" [formGroup]="observationForm" (ngSubmit)="addObservation()">
+            @if (currentUser(); as me) {
+              <p class="rc-muted">Transmission signée par {{ me.firstName }} {{ me.lastName }}.</p>
+            }
+            <mat-form-field appearance="outline">
+              <mat-label>Catégorie</mat-label>
+              <mat-select formControlName="category">
+                @for (cat of categories; track cat) {
+                  <mat-option [value]="cat">{{ categoryLabels[cat] }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Nouvelle observation</mat-label>
+              <textarea matInput formControlName="content" rows="2"></textarea>
+            </mat-form-field>
+            <button mat-flat-button type="submit" [disabled]="observationForm.invalid">Ajouter</button>
+          </form>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+}

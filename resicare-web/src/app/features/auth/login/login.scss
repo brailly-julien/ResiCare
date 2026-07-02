@@ -1,0 +1,33 @@
+/* Page de connexion : carte centrée, pensée mobile-first (pleine largeur puis plafonnée). */
+.rc-login {
+  display: flex;
+  justify-content: center;
+  padding-block: 2rem;
+}
+
+.rc-login__card {
+  width: 100%;
+  max-width: 24rem;
+}
+
+.rc-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rc-login__error {
+  margin: 0 0 0.5rem;
+  color: var(--mat-sys-error);
+}
+
+.rc-login__hint {
+  margin-top: 1.25rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.rc-login__hint code {
+  font-size: 0.78rem;
+}

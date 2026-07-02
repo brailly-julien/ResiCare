@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Couche DOMAIN : le cœur métier. AUCUNE référence à un autre projet,
+    AUCUN package NuGet. C'est la règle d'or de la Clean Architecture :
+    le domaine ne dépend de personne, tout le monde dépend de lui.
+    (Tous les réglages communs sont dans Directory.Build.props à la racine.)
+  -->
+
+</Project>

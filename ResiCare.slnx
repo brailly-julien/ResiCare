@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ResiCare.Api/ResiCare.Api.csproj" />
+    <Project Path="src/ResiCare.Application/ResiCare.Application.csproj" />
+    <Project Path="src/ResiCare.Domain/ResiCare.Domain.csproj" />
+    <Project Path="src/ResiCare.Infrastructure/ResiCare.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ResiCare.Api.IntegrationTests/ResiCare.Api.IntegrationTests.csproj" />
+    <Project Path="tests/ResiCare.Application.Tests/ResiCare.Application.Tests.csproj" />
+    <Project Path="tests/ResiCare.Domain.Tests/ResiCare.Domain.Tests.csproj" />
+  </Folder>
+</Solution>

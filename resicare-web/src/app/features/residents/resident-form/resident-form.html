@@ -1,0 +1,104 @@
+<mat-card class="rc-form-card">
+  <mat-card-header>
+    <mat-card-title>{{ isEdit() ? 'Modifier le résident' : 'Nouveau résident' }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="rc-form" [formGroup]="form" (ngSubmit)="submit()">
+      <h3 class="rc-section">Identité</h3>
+      <mat-form-field appearance="outline">
+        <mat-label>Prénom</mat-label>
+        <input matInput formControlName="firstName" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="lastName" />
+      </mat-form-field>
+      @if (!isEdit()) {
+        <mat-form-field appearance="outline">
+          <mat-label>Date de naissance</mat-label>
+          <input matInput type="date" formControlName="birthDate" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Date d'admission</mat-label>
+          <input matInput type="date" formControlName="admissionDate" />
+        </mat-form-field>
+      }
+      <mat-form-field appearance="outline">
+        <mat-label>Chambre</mat-label>
+        <input matInput formControlName="roomNumber" />
+      </mat-form-field>
+
+      <h3 class="rc-section">Autonomie (par activité)</h3>
+      @for (activity of activities; track activity) {
+        <mat-form-field appearance="outline">
+          <mat-label>{{ activityLabels[activity] }}</mat-label>
+          <mat-select [formControlName]="activity">
+            @for (level of autonomyLevels; track level) {
+              <mat-option [value]="level">{{ autonomyLabels[level] }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+
+      <h3 class="rc-section">Risques (niveau)</h3>
+      @for (risk of risks; track risk.key) {
+        <mat-form-field appearance="outline">
+          <mat-label>{{ risk.label }}</mat-label>
+          <mat-select [formControlName]="risk.key">
+            @for (level of riskLevels; track level) {
+              <mat-option [value]="level">{{ riskLevelLabels[level] }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+
+      <h3 class="rc-section">Soignant référent</h3>
+      <mat-form-field appearance="outline">
+        <mat-label>Référent</mat-label>
+        <mat-select formControlName="referentCaregiverId">
+          @for (c of caregivers(); track c.id) {
+            <mat-option [value]="c.id">{{ c.lastName }} {{ c.firstName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <h3 class="rc-section">Informations</h3>
+      <mat-form-field appearance="outline">
+        <mat-label>Médecin traitant</mat-label>
+        <input matInput formControlName="attendingPhysician" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Personne à contacter</mat-label>
+        <input matInput formControlName="emergencyContactName" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Téléphone du contact</mat-label>
+        <input matInput formControlName="emergencyContactPhone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Métier</mat-label>
+        <input matInput formControlName="occupation" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Intérêts / loisirs</mat-label>
+        <textarea matInput formControlName="interests" rows="2"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Famille</mat-label>
+        <textarea matInput formControlName="family" rows="2"></textarea>
+      </mat-form-field>
+
+      @if (error()) {
+        <p class="rc-error">{{ error() }}</p>
+      }
+
+      <div class="rc-form__actions">
+        <a mat-button routerLink="/residents">Annuler</a>
+        <button mat-flat-button type="submit" [disabled]="saving()">
+          {{ isEdit() ? 'Enregistrer' : 'Créer' }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

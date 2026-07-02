@@ -1,0 +1,61 @@
+<h1 class="rc-page-title">Pointage</h1>
+
+@if (error()) {
+  <p class="rc-error">{{ error() }}</p>
+}
+
+<mat-card class="rc-block">
+  <mat-card-header><mat-card-title>Mon poste</mat-card-title></mat-card-header>
+  <mat-card-content>
+    @if (activeShift(); as shift) {
+      <p class="rc-clock-status rc-clock-status--on">
+        <mat-icon>schedule</mat-icon>
+        En poste depuis {{ shift.clockInAt | date: 'HH:mm' }}
+      </p>
+      <button mat-flat-button (click)="clockOut()">
+        <mat-icon>logout</mat-icon> Pointer mon départ
+      </button>
+    } @else {
+      <p class="rc-clock-status">Aucun pointage en cours.</p>
+      <button mat-flat-button (click)="clockIn()">
+        <mat-icon>login</mat-icon> Pointer mon arrivée
+      </button>
+    }
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="rc-block">
+  <mat-card-header><mat-card-title>Mes pointages du jour</mat-card-title></mat-card-header>
+  <mat-card-content>
+    @if (loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+    @for (e of myEntries(); track e.id) {
+      <div class="rc-clock-row">
+        <span>{{ e.clockInAt | date: 'HH:mm' }} → {{ e.clockOutAt ? (e.clockOutAt | date: 'HH:mm') : '…' }}</span>
+        <span class="rc-chip">{{ formatDuration(e.durationMinutes) }}</span>
+      </div>
+    } @empty {
+      <p class="rc-muted">Aucun pointage aujourd'hui.</p>
+    }
+  </mat-card-content>
+</mat-card>
+
+@if (isManager()) {
+  <mat-card class="rc-block">
+    <mat-card-header><mat-card-title>Présences du jour</mat-card-title></mat-card-header>
+    <mat-card-content>
+      @for (e of presence(); track e.id) {
+        <div class="rc-clock-row">
+          <span>{{ caregiverName(e) }}</span>
+          <span class="rc-muted">
+            {{ e.clockInAt | date: 'HH:mm' }} → {{ e.clockOutAt ? (e.clockOutAt | date: 'HH:mm') : 'en poste' }}
+          </span>
+          <span class="rc-chip">{{ formatDuration(e.durationMinutes) }}</span>
+        </div>
+      } @empty {
+        <p class="rc-muted">Personne n'a encore pointé aujourd'hui.</p>
+      }
+    </mat-card-content>
+  </mat-card>
+}

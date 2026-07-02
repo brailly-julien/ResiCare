@@ -1,0 +1,16 @@
+# ===== .NET =====
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+
+# ===== Divers / local =====
+.env
+.idea/
+*.swp
+
+# ===== Système =====
+.DS_Store
+Thumbs.db

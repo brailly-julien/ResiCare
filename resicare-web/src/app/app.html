@@ -1,0 +1,19 @@
+<mat-toolbar class="rc-toolbar">
+  <a class="rc-toolbar__brand" routerLink="/">ResiCare</a>
+
+  @if (user(); as u) {
+    <a mat-button routerLink="/pointage"><mat-icon>schedule</mat-icon> Pointage</a>
+    @if (isManager()) {
+      <a mat-button routerLink="/planning"><mat-icon>event_note</mat-icon> Planning</a>
+    }
+    <span class="rc-toolbar__spacer"></span>
+    <span class="rc-toolbar__user">{{ u.firstName }} {{ u.lastName }} · {{ roleLabels[u.role] }}</span>
+    <button mat-icon-button (click)="logout()" aria-label="Se déconnecter" title="Se déconnecter">
+      <mat-icon>logout</mat-icon>
+    </button>
+  }
+</mat-toolbar>
+
+<main class="rc-container">
+  <router-outlet />
+</main>

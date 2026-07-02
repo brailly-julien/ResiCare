@@ -1,0 +1,16 @@
+@if (stats(); as s) {
+  <div class="rc-stats">
+    <mat-card class="rc-stat">
+      <div class="rc-stat__value">{{ s.activeResidents }}</div>
+      <div class="rc-stat__label">Résidents</div>
+    </mat-card>
+    <mat-card class="rc-stat">
+      <div class="rc-stat__value">{{ s.observationsToday }}</div>
+      <div class="rc-stat__label">Observations du jour</div>
+    </mat-card>
+    <mat-card class="rc-stat">
+      <div class="rc-stat__value">{{ completionRate() }}%</div>
+      <div class="rc-stat__label">Tâches faites ({{ s.tasksDoneToday }}/{{ s.tasksToday }})</div>
+    </mat-card>
+  </div>
+}

@@ -1,0 +1,119 @@
+:host {
+  display: block;
+}
+
+.rc-block {
+  margin-bottom: var(--rc-space-md);
+}
+
+.rc-active {
+  width: 100%;
+}
+
+.rc-error {
+  color: var(--mat-sys-error);
+}
+
+.rc-muted {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+/* Mobile-first : une colonne ; deux colonnes (tâches | observations) en desktop. */
+.rc-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--rc-space-md);
+}
+
+@media (min-width: 900px) {
+  .rc-columns {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.rc-task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rc-space-sm);
+  padding: var(--rc-space-sm) 0;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.rc-task--done {
+  text-decoration: line-through;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.rc-obs {
+  padding: var(--rc-space-sm) 0;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.rc-obs__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--rc-space-sm);
+  font-size: 0.85rem;
+}
+
+.rc-obs__content {
+  margin: var(--rc-space-xs) 0 0;
+}
+
+.rc-obs-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rc-space-sm);
+  margin-top: var(--rc-space-md);
+}
+
+.rc-obs-form mat-form-field {
+  width: 100%;
+}
+
+.rc-chip,
+.rc-badge {
+  display: inline-block;
+  padding: 2px var(--rc-space-sm);
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.rc-chip {
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+}
+
+.rc-badge--archived {
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
+.rc-badge--risk {
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+.rc-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rc-space-xs);
+  margin-top: var(--rc-space-sm);
+}
+
+.rc-dep-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rc-space-sm);
+  padding: var(--rc-space-xs) 0;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.rc-badge--done {
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}

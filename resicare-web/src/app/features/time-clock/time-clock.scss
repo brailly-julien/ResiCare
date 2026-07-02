@@ -1,0 +1,43 @@
+.rc-page-title {
+  margin: 0 0 1rem;
+}
+
+.rc-block {
+  margin-bottom: 1rem;
+}
+
+.rc-clock-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+}
+
+.rc-clock-status--on {
+  color: var(--mat-sys-primary);
+  font-weight: 600;
+}
+
+.rc-clock-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.rc-clock-row:last-child {
+  border-bottom: none;
+}
+
+.rc-clock-row .rc-chip {
+  margin-left: auto;
+}
+
+.rc-muted {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.rc-error {
+  color: var(--mat-sys-error);
+}

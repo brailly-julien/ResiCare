@@ -1,0 +1,80 @@
+.rc-presc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rc-presc-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.rc-block {
+  margin-bottom: 1rem;
+}
+
+.rc-presc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rc-presc-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.rc-presc-row:last-child {
+  border-bottom: none;
+}
+
+.rc-presc-row__main {
+  flex: 1;
+}
+
+.rc-presc-row__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.rc-presc-row--stopped {
+  opacity: 0.6;
+}
+
+.rc-chip {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+  font-size: 0.78rem;
+}
+
+.rc-chip--stopped {
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
+.rc-muted {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.85rem;
+}
+
+.rc-error {
+  color: var(--mat-sys-error);
+}
+
+/* Mobile-first : le formulaire passe en ligne sur écran large. */
+@media (min-width: 600px) {
+  .rc-presc-form {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}

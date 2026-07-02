@@ -1,0 +1,32 @@
+# Démarre une instance SQL Server pour le développement local.
+#   docker compose up -d      -> lance la base en arrière-plan
+#   docker compose down       -> arrête (les données restent dans le volume)
+#   docker compose down -v    -> arrête ET supprime les données
+#
+# Image publique Microsoft (mcr.microsoft.com) : aucun compte/login requis.
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: resicare-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "ResiCare!Dev2026" # doit correspondre à la chaîne de connexion de l'API
+      MSSQL_PID: "Developer"                # édition gratuite Developer
+    ports:
+      - "1433:1433"                          # hôte:conteneur
+    volumes:
+      - resicare-sqldata:/var/opt/mssql     # persistance des données
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  resicare-sqldata:

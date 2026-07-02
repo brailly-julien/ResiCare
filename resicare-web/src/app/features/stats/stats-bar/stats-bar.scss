@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+/* Mobile-first : tuiles empilées, puis 3 colonnes dès la tablette. */
+.rc-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--rc-space-sm);
+  margin-bottom: var(--rc-space-md);
+}
+
+@media (min-width: 600px) {
+  .rc-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.rc-stat {
+  text-align: center;
+  padding: var(--rc-space-sm);
+}
+
+.rc-stat__value {
+  font: var(--mat-sys-headline-medium);
+  color: var(--mat-sys-primary);
+}
+
+.rc-stat__label {
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}

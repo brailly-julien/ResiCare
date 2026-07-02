@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Couche INFRASTRUCTURE : EF Core, SQL Server, repositories.
+       Implémente les abstractions définies dans Application. -->
+  <ItemGroup>
+    <ProjectReference Include="..\ResiCare.Application\ResiCare.Application.csproj" />
+    <ProjectReference Include="..\ResiCare.Domain\ResiCare.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
+  </ItemGroup>
+
+</Project>

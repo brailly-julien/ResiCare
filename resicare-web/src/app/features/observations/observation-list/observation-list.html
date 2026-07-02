@@ -1,0 +1,36 @@
+<a mat-button [routerLink]="['/residents', residentId]">
+  <mat-icon>arrow_back</mat-icon>
+  Retour au résident
+</a>
+
+<h1 class="rc-title">Observations</h1>
+
+<mat-form-field appearance="outline" class="rc-filter">
+  <mat-label>Catégorie</mat-label>
+  <mat-select [value]="category" (selectionChange)="onCategoryChange($event.value)">
+    <mat-option [value]="null">Toutes</mat-option>
+    @for (cat of categories; track cat) {
+      <mat-option [value]="cat">{{ categoryLabels[cat] }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+@for (obs of observations(); track obs.id) {
+  <mat-card class="rc-obs-card">
+    <div class="rc-obs__meta">
+      <span class="rc-chip">{{ categoryLabels[obs.category] }}</span>
+      <span class="rc-muted">{{ obs.createdAt | date: 'dd/MM/yyyy HH:mm' }} · {{ caregiverName(obs.caregiverId) }}</span>
+    </div>
+    <p>{{ obs.content }}</p>
+  </mat-card>
+} @empty {
+  <p class="rc-muted">Aucune observation.</p>
+}
+
+<mat-paginator
+  [length]="totalCount()"
+  [pageSize]="pageSize"
+  [pageIndex]="pageIndex"
+  [hidePageSize]="true"
+  (page)="onPage($event)"
+/>
