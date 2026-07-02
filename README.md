@@ -1,5 +1,7 @@
 # ResiCare
 
+[![CI](https://github.com/brailly-julien/ResiCare/actions/workflows/ci.yml/badge.svg)](https://github.com/brailly-julien/ResiCare/actions/workflows/ci.yml)
+
 Mini-système de gestion pour établissement médico-social (EMS) : suivi des
 résidents, transmissions/observations et tâches de soin.
 
@@ -62,7 +64,7 @@ l'intérieur.** Le Domaine ne connaît personne ; l'API connaît tout le monde.
 - [x] **Jalon 5** — Front **Angular 22** (standalone, signals, zoneless), Material M3, **mobile-first** : liste+recherche, tableau de bord (complétion de tâche + ajout d'observation), formulaires create/edit typés, routes lazy
 - [x] **Bonus** (entre Jalon 5 et 6) — Enrichissement métier ✅ · statistiques ✅ · tests d'intégration API (WebApplicationFactory) ✅ · pagination + filtrage des observations ✅ · export PDF (QuestPDF) ✅ · **Auth JWT + rôles** ✅
 - [x] **Niveau 2** (optionnel) — Pointage des soignants ✅ · Planning / affectations ✅ · Prescriptions + posologie ✅
-- [~] **Jalon 6** — Dépôt Git initialisé + secrets en `user-secrets` ✅ · Workflow CI (build+test back & front) ✅ · reste : push vers un remote GitHub
+- [x] **Jalon 6** — Dépôt Git ✅ · secrets en `user-secrets` ✅ · CI GitHub Actions (build + tests back & front) ✅
 
 ## Authentification (comptes de démo)
 
