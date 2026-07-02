@@ -1,0 +1,13 @@
+# Contexte Docker : on exclut tout ce qui est régénéré ou inutile à l'image
+# (garde le contexte petit et évite d'embarquer des artefacts périmés).
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/.angular/
+.git/
+.github/
+.vs/
+tests/
+TestResults/
+*.md

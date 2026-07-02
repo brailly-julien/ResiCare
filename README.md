@@ -8,6 +8,20 @@ résidents, transmissions/observations et tâches de soin.
 > Projet portfolio full-stack **Angular + .NET 10** en **Clean Architecture**,
 > conçu pour démontrer concrètement chaque compétence d'une offre ciblée.
 
+## Démo
+
+**En local, en une commande** — une seule image Docker auto-suffisante : l'API sert le front
+Angular (même origine, aucun CORS) avec une base **SQLite semée au démarrage** (rien à installer).
+
+```bash
+docker build -t resicare .
+docker run --rm -p 8080:8080 -e Jwt__Key="une-cle-d-au-moins-32-caracteres" resicare
+# puis http://localhost:8080  — comptes de démo affichés sur la page de login
+```
+
+Comptes : `marie.curie@resicare.local` / `Manager123!` (responsable) ·
+`paul.durand@resicare.local` / `Soignant123!` (soignant).
+
 ## Stack technique
 
 | Domaine            | Choix                                                      |

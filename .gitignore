@@ -6,6 +6,9 @@ obj/
 .vs/
 TestResults/
 
+# Front Angular copié dans wwwroot au moment du build de l'image Docker (artefact, jamais commité).
+src/ResiCare.Api/wwwroot/
+
 # ===== Divers / local =====
 .env
 .idea/

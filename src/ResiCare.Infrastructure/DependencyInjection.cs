@@ -15,12 +15,23 @@ namespace ResiCare.Infrastructure;
 /// </summary>
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services, string? connectionString, string provider = "SqlServer")
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
-
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        {
+            if (string.Equals(provider, "Sqlite", StringComparison.OrdinalIgnoreCase))
+            {
+                // Utilisé pour la DÉMO déployée : conteneur unique, aucune base à héberger.
+                options.UseSqlite(connectionString ?? "Data Source=resicare.db");
+            }
+            else
+            {
+                // Défaut : SQL Server (dev local via Docker, et prod « réelle »).
+                ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
+                options.UseSqlServer(connectionString);
+            }
+        });
 
         // Expose le DbContext derrière son abstraction, consommée par la couche Application.
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());

@@ -19,7 +19,13 @@ public static class DatabaseInitialisationExtensions
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
 
-        await context.Database.MigrateAsync(cancellationToken);
+        // SQLite (démo) : on crée le schéma directement depuis le modèle EF (les migrations sont
+        // écrites pour SQL Server). SQL Server : on applique les migrations versionnées.
+        if (context.Database.IsSqlite())
+            await context.Database.EnsureCreatedAsync(cancellationToken);
+        else
+            await context.Database.MigrateAsync(cancellationToken);
+
         await ApplicationDbContextSeeder.SeedAsync(context, passwordHasher, cancellationToken);
     }
 }

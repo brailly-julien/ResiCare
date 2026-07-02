@@ -26,7 +26,10 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 // Nos deux couches, branchées via leur point d'entrée unique.
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Default")!);
+
+// Provider de base : SQL Server par défaut, SQLite pour la démo (config "Database:Provider").
+var dbProvider = builder.Configuration.GetValue<string>("Database:Provider") ?? "SqlServer";
+builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Default"), dbProvider);
 
 // Authentification JWT + autorisation par rôles (politique "Manager") + utilisateur courant.
 builder.Services.AddJwtAuthentication(builder.Configuration);
@@ -55,8 +58,8 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
-// En développement : applique les migrations en attente et injecte les données de démo.
-if (app.Environment.IsDevelopment())
+// En développement OU en démo (SeedOnStartup=true) : prépare la base + injecte les données.
+if (app.Environment.IsDevelopment() || app.Configuration.GetValue("SeedOnStartup", false))
 {
     await app.Services.InitialiseDatabaseAsync();
 }
@@ -73,7 +76,15 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference().AllowAnonymous();
 }
 
-app.UseHttpsRedirection();
+// En conteneur (démo), le TLS est géré par l'hébergeur en amont → pas de redirection ici.
+if (app.Configuration.GetValue("EnableHttpsRedirection", true))
+    app.UseHttpsRedirection();
+
+// Sert le front Angular (fichiers publiés dans wwwroot) — MÊME ORIGINE que l'API, donc aucun
+// CORS. En dev, wwwroot est vide (le front tourne sur ng serve :4200) : ces middlewares sont
+// alors sans effet. Placés AVANT l'auth : les assets du SPA (dont la page de login) sont publics.
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 // On plafonne les tentatives AVANT l'authentification (on limite avant tout travail coûteux).
 app.UseRateLimiter();
@@ -91,6 +102,11 @@ app.MapStatsEndpoints();
 app.MapTimeClockEndpoints();
 app.MapAssignmentEndpoints();
 app.MapPrescriptionEndpoints();
+
+// Routes CÔTÉ CLIENT d'Angular (ex. /login, /residents) : on renvoie index.html pour que le
+// routeur Angular prenne le relais. AllowAnonymous, sinon la FallbackPolicy (authentifié par
+// défaut) empêcherait le chargement de l'appli. Ne capture pas /api/... (déjà routé au-dessus).
+app.MapFallbackToFile("index.html").AllowAnonymous();
 
 app.Run();
 
