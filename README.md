@@ -10,6 +10,10 @@ résidents, transmissions/observations et tâches de soin.
 
 ## Démo
 
+**🔗 En ligne : [resicare-brailly.onrender.com](https://resicare-brailly.onrender.com)** — connecte-toi
+avec un compte de démo (affichés sur la page de login) et teste les deux rôles.
+*(Hébergement gratuit : la toute première ouverture peut prendre ~30 s, le temps du réveil du service.)*
+
 **En local, en une commande** — une seule image Docker auto-suffisante : l'API sert le front
 Angular (même origine, aucun CORS) avec une base **SQLite semée au démarrage** (rien à installer).
 
