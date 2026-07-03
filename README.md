@@ -75,14 +75,14 @@ l'intérieur.** Le Domaine ne connaît personne ; l'API connaît tout le monde.
 ## État d'avancement
 
 - [x] **Jalon 0** — Solution à 4 projets, références entre couches
-- [x] **Jalon 1** — Domaine ✅ · EF Core (DbContext, Fluent API, migration `InitialCreate`) ✅ · seed de démo ✅ · SQL Server via Docker ✅
+- [x] **Jalon 1** — Domaine  · EF Core (DbContext, Fluent API, migration `InitialCreate`)  · seed de démo  · SQL Server via Docker 
 - [x] **Jalon 2** — CQRS résidents complet : dispatcher maison, validation, erreurs (ProblemDetails), 5 endpoints (CRUD + archive + tableau de bord), UI Scalar
 - [x] **Jalon 3** — Observations & tâches : ajout/liste d'observations (règle « archivé » → 409), planification/complétion de tâches (règle « complétion unique » → 409)
 - [x] **Jalon 4** — Tests xUnit + FluentAssertions : 27 tests verts (19 Domaine + 8 handlers via SQLite in-memory)
 - [x] **Jalon 5** — Front **Angular 22** (standalone, signals, zoneless), Material M3, **mobile-first** : liste+recherche, tableau de bord (complétion de tâche + ajout d'observation), formulaires create/edit typés, routes lazy
-- [x] **Bonus** (entre Jalon 5 et 6) — Enrichissement métier ✅ · statistiques ✅ · tests d'intégration API (WebApplicationFactory) ✅ · pagination + filtrage des observations ✅ · export PDF (QuestPDF) ✅ · **Auth JWT + rôles** ✅
-- [x] **Niveau 2** (optionnel) — Pointage des soignants ✅ · Planning / affectations ✅ · Prescriptions + posologie ✅
-- [x] **Jalon 6** — Dépôt Git ✅ · secrets en `user-secrets` ✅ · CI GitHub Actions (build + tests back & front) ✅
+- [x] **Bonus** (entre Jalon 5 et 6) — Enrichissement métier  · statistiques  · tests d'intégration API (WebApplicationFactory)  · pagination + filtrage des observations  · export PDF (QuestPDF)  · **Auth JWT + rôles** 
+- [x] **Niveau 2** (optionnel) — Pointage des soignants  · Planning / affectations  · Prescriptions + posologie 
+- [x] **Jalon 6** — Dépôt Git  · secrets en `user-secrets`  · CI GitHub Actions (build + tests back & front) 
 
 ## Authentification (comptes de démo)
 

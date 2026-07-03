@@ -28,11 +28,37 @@
         <button mat-flat-button type="submit" [disabled]="form.invalid || loading()">Se connecter</button>
       </form>
 
-      <p class="rc-login__hint">
-        Comptes de démonstration :<br />
-        Responsable — <code>marie.curie&#64;resicare.local</code> / <code>Manager123!</code><br />
-        Soignant — <code>paul.durand&#64;resicare.local</code> / <code>Soignant123!</code>
-      </p>
+      <div class="rc-login__demo">
+        <p class="rc-login__demo-title">Comptes de démonstration :</p>
+
+        <div class="rc-login__demo-account">
+          <span class="rc-login__demo-creds">
+            <strong>Responsable</strong> — <code>marie.curie&#64;resicare.local</code> / <code>Manager123!</code>
+          </span>
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="loading()"
+            (click)="loginAsDemo('marie.curie@resicare.local', 'Manager123!')"
+          >
+            <mat-icon>login</mat-icon> Connexion rapide
+          </button>
+        </div>
+
+        <div class="rc-login__demo-account">
+          <span class="rc-login__demo-creds">
+            <strong>Soignant</strong> — <code>paul.durand&#64;resicare.local</code> / <code>Soignant123!</code>
+          </span>
+          <button
+            mat-stroked-button
+            type="button"
+            [disabled]="loading()"
+            (click)="loginAsDemo('paul.durand@resicare.local', 'Soignant123!')"
+          >
+            <mat-icon>login</mat-icon> Connexion rapide
+          </button>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

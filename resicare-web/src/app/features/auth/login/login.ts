@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AuthService } from '../../../core/auth/auth.service';
@@ -17,6 +18,7 @@ import { AuthService } from '../../../core/auth/auth.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     MatProgressBarModule,
   ],
   templateUrl: './login.html',
@@ -52,5 +54,11 @@ export class Login {
         this.loading.set(false);
       },
     });
+  }
+
+  /** Connexion en un clic avec un compte de démonstration (remplit puis soumet le formulaire). */
+  loginAsDemo(email: string, password: string): void {
+    this.form.setValue({ email, password });
+    this.submit();
   }
 }
