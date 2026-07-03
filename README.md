@@ -94,31 +94,35 @@ Connecte-toi sur `/login` avec un compte injecté par le seed :
 | Responsable | `marie.curie@resicare.local`   | `Manager123!`  | créer/modifier/archiver, planifier   |
 | Soignant    | `paul.durand@resicare.local`   | `Soignant123!` | consulter, transmettre, valider tâches |
 
-> ⚠️ Le schéma a changé (colonnes `Email`/`PasswordHash` + index unique). Avant le prochain
-> `dotnet run`, **réinitialiser la base** : `docker compose down -v && docker compose up -d`.
 
 ## Démarrer
 
 Prérequis : [SDK .NET 10](https://dotnet.microsoft.com/download), [Node ≥ 20](https://nodejs.org/),
 Docker (pour SQL Server).
 
-**1. Secrets** (chaîne de connexion + clé JWT — volontairement absentes de `appsettings.json`) :
+**1. Base de données + back-end :**
 
 ```bash
-dotnet user-secrets init --project src/ResiCare.Api
-dotnet user-secrets set "ConnectionStrings:Default" "Server=localhost,1433;Database=ResiCare;User Id=sa;Password=ResiCare!Dev2026;TrustServerCertificate=True" --project src/ResiCare.Api
-dotnet user-secrets set "Jwt:Key" "une-cle-d-au-moins-32-caracteres-pour-hmac-sha256" --project src/ResiCare.Api
-```
-
-**2. Base de données + back-end :**
-
-```bash
-docker compose up -d                    # démarre SQL Server (mot de passe = celui fourni ci-dessus)
+docker compose up -d                    # démarre SQL Server (conteneur local)
 dotnet build ResiCare.slnx              # compiler toute la solution
 dotnet run --project src/ResiCare.Api   # http://localhost:5045 (auto-migrate + seed en dev)
 ```
 
-**3. Front-end :**
+En dev, **aucune configuration n'est requise** : la chaîne de connexion et une clé
+JWT de dev vivent déjà dans `appsettings.Development.json` (le mot de passe SQL est
+celui de `docker-compose.yml`). Pour les surcharger avec tes propres valeurs
+— *optionnel* —, utilise `dotnet user-secrets` (prioritaire sur ce fichier) :
+
+```bash
+dotnet user-secrets set "ConnectionStrings:Default" "…" --project src/ResiCare.Api
+dotnet user-secrets set "Jwt:Key" "…au moins 32 caractères…" --project src/ResiCare.Api
+```
+
+> En **production**, `appsettings.json` reste vide : la chaîne de connexion et la clé
+> JWT proviennent alors de variables d'environnement (`ConnectionStrings__Default`,
+> `Jwt__Key`), jamais commitées.
+
+**2. Front-end :**
 
 ```bash
 npm --prefix resicare-web install
